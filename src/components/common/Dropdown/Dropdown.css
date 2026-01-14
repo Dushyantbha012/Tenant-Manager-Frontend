@@ -1,0 +1,146 @@
+/* ==========================================================================
+   Dropdown Component Styles
+   ========================================================================== */
+
+.dropdown {
+    position: relative;
+    display: inline-flex;
+}
+
+.dropdown-trigger {
+    cursor: pointer;
+}
+
+/* Menu */
+.dropdown-menu {
+    position: absolute;
+    min-width: 180px;
+    padding: var(--space-1);
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    z-index: var(--z-dropdown);
+    animation: dropdownFadeIn var(--transition-fast);
+}
+
+/* Placements */
+.dropdown-bottom-start {
+    top: 100%;
+    left: 0;
+    margin-top: var(--space-1);
+}
+
+.dropdown-bottom-end {
+    top: 100%;
+    right: 0;
+    margin-top: var(--space-1);
+}
+
+.dropdown-top-start {
+    bottom: 100%;
+    left: 0;
+    margin-bottom: var(--space-1);
+}
+
+.dropdown-top-end {
+    bottom: 100%;
+    right: 0;
+    margin-bottom: var(--space-1);
+}
+
+/* Item */
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    width: 100%;
+    padding: var(--space-2) var(--space-3);
+    font-size: var(--text-sm);
+    color: var(--text-primary);
+    background: transparent;
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    text-align: left;
+    transition: all var(--transition-fast);
+}
+
+.dropdown-item:hover:not(:disabled) {
+    background-color: var(--background-secondary);
+}
+
+.dropdown-item:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.dropdown-item-danger {
+    color: var(--danger);
+}
+
+.dropdown-item-danger:hover:not(:disabled) {
+    background-color: var(--danger-light);
+}
+
+/* Item Icon */
+.dropdown-item-icon {
+    display: flex;
+    align-items: center;
+    color: var(--text-secondary);
+}
+
+.dropdown-item-icon svg {
+    width: 16px;
+    height: 16px;
+}
+
+.dropdown-item-danger .dropdown-item-icon {
+    color: var(--danger);
+}
+
+/* Divider */
+.dropdown-divider {
+    height: 1px;
+    margin: var(--space-1) 0;
+    background-color: var(--border);
+}
+
+/* Default More Trigger */
+.dropdown-more-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.dropdown-more-trigger:hover {
+    background-color: var(--background-secondary);
+    color: var(--text-primary);
+}
+
+.dropdown-more-trigger svg {
+    width: 18px;
+    height: 18px;
+}
+
+/* Animation */
+@keyframes dropdownFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

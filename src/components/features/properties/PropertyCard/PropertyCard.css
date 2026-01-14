@@ -1,0 +1,143 @@
+/* ==========================================================================
+   PropertyCard Component Styles
+   ========================================================================== */
+
+.property-card {
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition: all var(--transition-base);
+}
+
+.property-card:hover {
+    border-color: var(--primary);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}
+
+/* Header */
+.property-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-4);
+    padding-bottom: 0;
+}
+
+.property-card-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
+    border-radius: var(--radius-md);
+    color: white;
+}
+
+.property-card-icon svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* Content */
+.property-card-content {
+    display: block;
+    padding: var(--space-4);
+    text-decoration: none;
+    color: inherit;
+}
+
+.property-card-name {
+    margin: 0;
+    margin-bottom: var(--space-2);
+    font-size: var(--text-lg);
+    font-weight: var(--font-semibold);
+    color: var(--text-primary);
+}
+
+.property-card-address {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-1);
+    margin: 0;
+    margin-bottom: var(--space-4);
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+    line-height: var(--leading-relaxed);
+}
+
+.property-card-address svg {
+    flex-shrink: 0;
+    width: 14px;
+    height: 14px;
+    margin-top: 2px;
+}
+
+/* Stats Grid */
+.property-card-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-3);
+    padding: var(--space-3);
+    margin-bottom: var(--space-4);
+    background-color: var(--background-secondary);
+    border-radius: var(--radius-md);
+}
+
+.property-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-1);
+    text-align: center;
+}
+
+.property-stat-icon {
+    font-size: var(--text-lg);
+}
+
+.property-stat-value {
+    font-size: var(--text-lg);
+    font-weight: var(--font-semibold);
+    color: var(--text-primary);
+}
+
+.property-stat-label {
+    font-size: var(--text-xs);
+    color: var(--text-tertiary);
+}
+
+/* Occupancy Bar */
+.property-card-occupancy {
+    padding-top: var(--space-3);
+    border-top: 1px solid var(--border);
+}
+
+.occupancy-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: var(--space-2);
+    font-size: var(--text-xs);
+    color: var(--text-secondary);
+}
+
+.occupancy-rate {
+    font-weight: var(--font-semibold);
+    color: var(--text-primary);
+}
+
+.occupancy-bar {
+    height: 6px;
+    background-color: var(--background-secondary);
+    border-radius: var(--radius-full);
+    overflow: hidden;
+}
+
+.occupancy-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--success) 0%, #22c55e 100%);
+    border-radius: var(--radius-full);
+    transition: width var(--transition-slow);
+}

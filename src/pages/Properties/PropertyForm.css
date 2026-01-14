@@ -1,0 +1,99 @@
+/* ==========================================================================
+   PropertyForm Page Styles
+   ========================================================================== */
+
+.property-form-page {
+    padding: var(--space-5);
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+/* Back Link */
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-bottom: var(--space-4);
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+}
+
+.back-link:hover {
+    color: var(--primary);
+}
+
+.back-link svg {
+    width: 16px;
+    height: 16px;
+}
+
+/* Page Title */
+.form-page-title {
+    margin: 0;
+    font-size: var(--text-2xl);
+    font-weight: var(--font-bold);
+    color: var(--text-primary);
+}
+
+.form-page-subtitle {
+    margin: 0;
+    margin-top: var(--space-1);
+    margin-bottom: var(--space-5);
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+}
+
+/* Form Card */
+.property-form-card {
+    padding: var(--space-5);
+}
+
+/* Form Layout */
+.form-group {
+    margin-bottom: var(--space-4);
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-4);
+}
+
+.form-field-hint {
+    margin: 0;
+    margin-top: var(--space-1);
+    font-size: var(--text-xs);
+    color: var(--text-tertiary);
+}
+
+/* Form Actions */
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--space-3);
+    padding-top: var(--space-5);
+    border-top: 1px solid var(--border);
+    margin-top: var(--space-5);
+}
+
+/* Responsive */
+@media (max-width: 576px) {
+    .property-form-page {
+        padding: var(--space-4);
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .form-actions {
+        flex-direction: column-reverse;
+    }
+
+    .form-actions .btn {
+        width: 100%;
+        justify-content: center;
+    }
+}

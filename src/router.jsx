@@ -13,6 +13,11 @@ import OAuthRedirect from './pages/auth/OAuthRedirect';
 import Dashboard from './pages/Dashboard';
 import NotFound from './pages/NotFound';
 
+// Property Pages
+import PropertyList from './pages/Properties/PropertyList';
+import PropertyDetail from './pages/Properties/PropertyDetail';
+import PropertyForm from './pages/Properties/PropertyForm';
+
 // Routes
 import { ROUTES } from './utils/constants';
 
@@ -44,14 +49,31 @@ const router = createBrowserRouter([
                 index: true,
                 element: <Dashboard />,
             },
-            // Placeholder routes for Phase 2+
+            // Property routes
             {
                 path: 'properties',
-                element: <div style={{ padding: '24px' }}><h2>Properties (Coming in Phase 2)</h2></div>,
+                element: <PropertyList />,
             },
+            {
+                path: 'properties/new',
+                element: <PropertyForm />,
+            },
+            {
+                path: 'properties/:id',
+                element: <PropertyDetail />,
+            },
+            {
+                path: 'properties/:id/edit',
+                element: <PropertyForm />,
+            },
+            // Placeholder routes for Phase 3+
             {
                 path: 'tenants',
                 element: <div style={{ padding: '24px' }}><h2>Tenants (Coming in Phase 3)</h2></div>,
+            },
+            {
+                path: 'tenants/new',
+                element: <div style={{ padding: '24px' }}><h2>Add Tenant (Coming in Phase 3)</h2></div>,
             },
             {
                 path: 'payments',

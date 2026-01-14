@@ -1,0 +1,141 @@
+/* ==========================================================================
+   PropertyList Page Styles
+   ========================================================================== */
+
+.property-list-page {
+    padding: var(--space-5);
+}
+
+/* Page Header */
+.page-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-4);
+    margin-bottom: var(--space-5);
+}
+
+.page-header-content {
+    flex: 1;
+}
+
+.page-title {
+    margin: 0;
+    font-size: var(--text-2xl);
+    font-weight: var(--font-bold);
+    color: var(--text-primary);
+}
+
+.page-subtitle {
+    margin: 0;
+    margin-top: var(--space-1);
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+}
+
+/* Toolbar */
+.property-toolbar {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    margin-bottom: var(--space-5);
+}
+
+.property-search {
+    flex: 1;
+    max-width: 400px;
+}
+
+.view-toggle {
+    display: flex;
+    background-color: var(--background-secondary);
+    border-radius: var(--radius-md);
+    padding: var(--space-1);
+}
+
+.view-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background: transparent;
+    border: none;
+    border-radius: var(--radius-sm);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.view-btn:hover {
+    color: var(--text-primary);
+}
+
+.view-btn.active {
+    background-color: var(--surface);
+    color: var(--primary);
+    box-shadow: var(--shadow-sm);
+}
+
+.view-btn svg {
+    width: 18px;
+    height: 18px;
+}
+
+/* Property Grid */
+.property-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: var(--space-5);
+}
+
+/* Property List */
+.property-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+}
+
+/* Skeleton */
+.property-skeleton {
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .property-list-page {
+        padding: var(--space-4);
+    }
+
+    .page-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .page-header a {
+        width: 100%;
+    }
+
+    .page-header a .btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .property-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .property-search {
+        max-width: none;
+    }
+
+    .view-toggle {
+        align-self: flex-end;
+    }
+
+    .property-grid {
+        grid-template-columns: 1fr;
+    }
+}

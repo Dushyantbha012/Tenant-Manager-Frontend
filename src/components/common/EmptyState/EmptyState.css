@@ -1,0 +1,86 @@
+/* ==========================================================================
+   EmptyState Component Styles
+   ========================================================================== */
+
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: var(--space-8);
+}
+
+/* Sizes */
+.empty-state-sm {
+    padding: var(--space-5);
+}
+
+.empty-state-sm .empty-state-icon {
+    width: 48px;
+    height: 48px;
+}
+
+.empty-state-sm .empty-state-title {
+    font-size: var(--text-sm);
+}
+
+.empty-state-md .empty-state-icon {
+    width: 64px;
+    height: 64px;
+}
+
+.empty-state-lg {
+    padding: var(--space-10);
+}
+
+.empty-state-lg .empty-state-icon {
+    width: 80px;
+    height: 80px;
+}
+
+.empty-state-lg .empty-state-title {
+    font-size: var(--text-xl);
+}
+
+/* Icon */
+.empty-state-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+    margin-bottom: var(--space-4);
+    color: var(--text-tertiary);
+    background-color: var(--background-secondary);
+    border-radius: var(--radius-full);
+}
+
+.empty-state-icon svg {
+    width: 50%;
+    height: 50%;
+}
+
+/* Title */
+.empty-state-title {
+    margin: 0;
+    margin-bottom: var(--space-2);
+    font-size: var(--text-base);
+    font-weight: var(--font-semibold);
+    color: var(--text-primary);
+}
+
+/* Description */
+.empty-state-description {
+    margin: 0;
+    margin-bottom: var(--space-5);
+    max-width: 400px;
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+    line-height: var(--leading-relaxed);
+}
+
+/* Action */
+.empty-state-action {
+    margin-top: var(--space-2);
+}
