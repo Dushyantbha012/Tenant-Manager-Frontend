@@ -1,0 +1,119 @@
+/* RecentActivity Styles */
+
+.recent-activity {
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+}
+
+.recent-activity-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-5);
+    border-bottom: 1px solid var(--border);
+}
+
+.recent-activity-title {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--text-base);
+    font-weight: var(--font-semibold);
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.recent-activity-title svg {
+    width: 20px;
+    height: 20px;
+    color: var(--primary);
+}
+
+.recent-activity-see-all {
+    font-size: var(--text-sm);
+    font-weight: var(--font-medium);
+    color: var(--primary);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.recent-activity-see-all:hover {
+    text-decoration: underline;
+}
+
+.recent-activity-list {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Activity Item */
+.activity-item {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+    padding: var(--space-4) var(--space-5);
+    border-bottom: 1px solid var(--border);
+    transition: background-color var(--transition-fast);
+}
+
+.activity-item:last-child {
+    border-bottom: none;
+}
+
+.activity-item:hover {
+    background-color: var(--background-secondary);
+}
+
+.activity-icon {
+    font-size: var(--text-lg);
+    flex-shrink: 0;
+}
+
+.activity-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.activity-message {
+    font-size: var(--text-sm);
+    color: var(--text-primary);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+}
+
+.activity-amount {
+    font-weight: var(--font-semibold);
+    color: var(--success);
+}
+
+.activity-detail {
+    font-size: var(--text-xs);
+    color: var(--text-tertiary);
+    display: block;
+    margin-top: var(--space-1);
+}
+
+.activity-time {
+    font-size: var(--text-xs);
+    color: var(--text-tertiary);
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+/* Empty State */
+.recent-activity-empty {
+    padding: var(--space-6);
+    text-align: center;
+}
+
+.recent-activity-empty p {
+    color: var(--text-secondary);
+    margin: 0;
+}

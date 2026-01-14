@@ -1,0 +1,134 @@
+/* PendingAlerts Styles */
+
+.pending-alerts {
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-5);
+}
+
+.pending-alerts-title {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--text-base);
+    font-weight: var(--font-semibold);
+    color: var(--text-primary);
+    margin: 0 0 var(--space-4);
+}
+
+.pending-alerts-title svg {
+    width: 20px;
+    height: 20px;
+    color: var(--danger);
+}
+
+.pending-alerts-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+/* Alert Item */
+.pending-alert {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+    padding: var(--space-4);
+    border-radius: var(--radius-md);
+}
+
+.pending-alert-warning {
+    background-color: var(--warning-light);
+}
+
+.pending-alert-info {
+    background-color: var(--info-light);
+}
+
+.pending-alert-danger {
+    background-color: var(--danger-light);
+}
+
+.pending-alert-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-full);
+    flex-shrink: 0;
+}
+
+.pending-alert-warning .pending-alert-icon {
+    background-color: var(--warning);
+    color: white;
+}
+
+.pending-alert-info .pending-alert-icon {
+    background-color: var(--info);
+    color: white;
+}
+
+.pending-alert-danger .pending-alert-icon {
+    background-color: var(--danger);
+    color: white;
+}
+
+.pending-alert-icon svg {
+    width: 18px;
+    height: 18px;
+}
+
+.pending-alert-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.pending-alert-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+}
+
+.pending-alert-label {
+    font-size: var(--text-sm);
+    font-weight: var(--font-medium);
+    color: var(--text-primary);
+}
+
+.pending-alert-action {
+    display: inline-block;
+    margin-top: var(--space-2);
+    font-size: var(--text-sm);
+    font-weight: var(--font-medium);
+    color: var(--primary);
+    text-decoration: none;
+}
+
+.pending-alert-action:hover {
+    text-decoration: underline;
+}
+
+/* Empty State */
+.pending-alert-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-5);
+    text-align: center;
+    color: var(--success);
+}
+
+.pending-alert-empty svg {
+    width: 40px;
+    height: 40px;
+}
+
+.pending-alert-empty p {
+    color: var(--text-secondary);
+    margin: 0;
+}

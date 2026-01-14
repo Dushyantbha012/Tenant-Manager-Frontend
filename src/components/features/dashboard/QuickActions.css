@@ -1,0 +1,65 @@
+/* QuickActions Styles */
+
+.quick-actions {
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-5);
+}
+
+.quick-actions-title {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--text-base);
+    font-weight: var(--font-semibold);
+    color: var(--text-primary);
+    margin: 0 0 var(--space-4);
+}
+
+.quick-actions-title svg {
+    width: 20px;
+    height: 20px;
+    color: var(--warning);
+}
+
+.quick-actions-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+.quick-action-link {
+    text-decoration: none;
+}
+
+.quick-action-btn {
+    justify-content: flex-start;
+}
+
+.quick-action-primary:hover {
+    border-color: var(--primary);
+    background-color: var(--primary-light);
+}
+
+.quick-action-primary .btn-icon {
+    color: var(--primary);
+}
+
+.quick-action-success:hover {
+    border-color: var(--success);
+    background-color: var(--success-light);
+}
+
+.quick-action-success .btn-icon {
+    color: var(--success);
+}
+
+.quick-action-info:hover {
+    border-color: var(--info);
+    background-color: var(--info-light);
+}
+
+.quick-action-info .btn-icon {
+    color: var(--info);
+}

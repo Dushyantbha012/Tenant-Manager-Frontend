@@ -1,0 +1,86 @@
+/* Card Component Styles */
+
+.card {
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    transition: box-shadow var(--transition-base), transform var(--transition-base);
+}
+
+.card-shadow {
+    box-shadow: var(--shadow-sm);
+}
+
+.card-hoverable {
+    cursor: pointer;
+}
+
+.card-hoverable:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}
+
+/* Padding Variants */
+.card-padding-none .card-header,
+.card-padding-none .card-body {
+    padding: 0;
+}
+
+.card-padding-sm .card-header,
+.card-padding-sm .card-body {
+    padding: var(--space-3);
+}
+
+.card-padding-md .card-header,
+.card-padding-md .card-body {
+    padding: var(--space-4);
+}
+
+.card-padding-lg .card-header,
+.card-padding-lg .card-body {
+    padding: var(--space-5);
+}
+
+/* Header */
+.card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-4);
+    border-bottom: 1px solid var(--border);
+}
+
+.card-header-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.card-title {
+    font-size: var(--text-base);
+    font-weight: var(--font-semibold);
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.card-subtitle {
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+    margin: var(--space-1) 0 0 0;
+}
+
+.card-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    flex-shrink: 0;
+}
+
+/* Body */
+.card-body {
+    /* Body content styling done by children */
+}
+
+/* No header card - remove top border radius compensation */
+.card:not(:has(.card-header)) .card-body {
+    border-radius: var(--radius-md);
+}

@@ -1,0 +1,134 @@
+/* Input Component Styles */
+
+.input-container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    width: 100%;
+}
+
+.input-label {
+    font-size: var(--text-sm);
+    font-weight: var(--font-medium);
+    color: var(--text-primary);
+}
+
+.input-required {
+    color: var(--danger);
+    margin-left: var(--space-1);
+}
+
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-field {
+    flex: 1;
+    height: 42px;
+    padding: 0 var(--space-3);
+    font-size: var(--text-sm);
+    color: var(--text-primary);
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.input-field:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px var(--primary-light);
+}
+
+.input-field::placeholder {
+    color: var(--text-tertiary);
+}
+
+/* With prefix/suffix */
+.input-prefix,
+.input-suffix {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: var(--text-secondary);
+    pointer-events: none;
+}
+
+.input-prefix {
+    left: var(--space-3);
+}
+
+.input-suffix {
+    right: var(--space-3);
+}
+
+.input-prefix+.input-field {
+    padding-left: calc(var(--space-3) + 24px);
+}
+
+.input-wrapper:has(.input-suffix) .input-field,
+.input-wrapper:has(.input-password-toggle) .input-field {
+    padding-right: calc(var(--space-3) + 32px);
+}
+
+.input-prefix svg,
+.input-suffix svg {
+    width: 18px;
+    height: 18px;
+}
+
+/* Password Toggle */
+.input-password-toggle {
+    position: absolute;
+    right: var(--space-2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    color: var(--text-secondary);
+    background: none;
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: color var(--transition-fast);
+}
+
+.input-password-toggle:hover {
+    color: var(--text-primary);
+}
+
+.input-password-toggle svg {
+    width: 18px;
+    height: 18px;
+}
+
+/* Error State */
+.input-error .input-field {
+    border-color: var(--danger);
+}
+
+.input-error .input-field:focus {
+    box-shadow: 0 0 0 3px var(--danger-light);
+}
+
+.input-error-message {
+    font-size: var(--text-xs);
+    color: var(--danger);
+    margin: 0;
+}
+
+/* Disabled State */
+.input-disabled .input-field {
+    background-color: var(--background-secondary);
+    color: var(--text-tertiary);
+    cursor: not-allowed;
+}
+
+.input-disabled .input-label {
+    color: var(--text-tertiary);
+}

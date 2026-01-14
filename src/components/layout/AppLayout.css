@@ -1,0 +1,74 @@
+/* AppLayout Styles */
+
+.app-layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Main Content Area */
+.app-main {
+    flex: 1;
+    margin-left: var(--sidebar-width);
+    min-height: 100vh;
+    background-color: var(--background);
+}
+
+/* Mobile Header - only visible on small screens */
+.app-mobile-header {
+    display: none;
+    align-items: center;
+    gap: var(--space-3);
+    height: var(--header-height);
+    padding: 0 var(--space-4);
+    background-color: var(--surface);
+    border-bottom: 1px solid var(--border);
+}
+
+.app-mobile-menu-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    color: var(--text-secondary);
+    background: none;
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+}
+
+.app-mobile-menu-toggle:hover {
+    color: var(--text-primary);
+    background-color: var(--background-secondary);
+}
+
+.app-mobile-menu-toggle svg {
+    width: 24px;
+    height: 24px;
+}
+
+.app-mobile-logo {
+    font-size: var(--text-lg);
+    font-weight: var(--font-bold);
+    color: var(--text-primary);
+}
+
+/* Overlay for mobile menu */
+.app-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: calc(var(--z-fixed) - 1);
+    animation: fadeIn var(--transition-fast) ease-out;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .app-main {
+        margin-left: 0;
+    }
+
+    .app-mobile-header {
+        display: flex;
+    }
+}

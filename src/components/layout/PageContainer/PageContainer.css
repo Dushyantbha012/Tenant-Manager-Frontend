@@ -1,0 +1,27 @@
+/* PageContainer Styles */
+
+.page-container {
+    padding: var(--space-5);
+    max-width: var(--container-max-width);
+    margin: 0 auto;
+    animation: fadeIn var(--transition-base) ease-out;
+}
+
+@media (max-width: 768px) {
+    .page-container {
+        padding: var(--space-4);
+    }
+}
+
+/* Keyframe for fade in */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

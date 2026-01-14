@@ -1,0 +1,158 @@
+/* Dashboard Page Styles */
+
+/* Stats Grid */
+.dashboard-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-4);
+    margin-bottom: var(--space-5);
+}
+
+@media (max-width: 1200px) {
+    .dashboard-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 576px) {
+    .dashboard-stats {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Revenue Section */
+.dashboard-revenue {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-4);
+    margin-bottom: var(--space-5);
+}
+
+@media (max-width: 768px) {
+    .dashboard-revenue {
+        grid-template-columns: 1fr;
+    }
+}
+
+.revenue-card {
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-5);
+}
+
+.revenue-header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+}
+
+.revenue-icon {
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-md);
+    flex-shrink: 0;
+}
+
+.revenue-icon svg {
+    width: 28px;
+    height: 28px;
+}
+
+.revenue-icon-expected {
+    background: linear-gradient(135deg, var(--primary-light) 0%, rgba(99, 102, 241, 0.2) 100%);
+    color: var(--primary);
+}
+
+.revenue-icon-collected {
+    background: linear-gradient(135deg, var(--success-light) 0%, rgba(16, 185, 129, 0.2) 100%);
+    color: var(--success);
+}
+
+.revenue-info {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+}
+
+.revenue-label {
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+}
+
+.revenue-value {
+    font-size: var(--text-2xl);
+    font-weight: var(--font-bold);
+    color: var(--text-primary);
+}
+
+.revenue-progress {
+    margin-top: var(--space-4);
+    position: relative;
+}
+
+.revenue-progress::before {
+    content: '';
+    display: block;
+    height: 8px;
+    background-color: var(--background-secondary);
+    border-radius: var(--radius-full);
+}
+
+.revenue-progress-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 8px;
+    background: linear-gradient(90deg, var(--success) 0%, #34d399 100%);
+    border-radius: var(--radius-full);
+    transition: width 0.5s ease-out;
+}
+
+.revenue-progress-label {
+    display: block;
+    margin-top: var(--space-2);
+    font-size: var(--text-xs);
+    color: var(--text-secondary);
+    text-align: right;
+}
+
+/* Bottom Grid */
+.dashboard-bottom {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: var(--space-5);
+}
+
+@media (max-width: 1024px) {
+    .dashboard-bottom {
+        grid-template-columns: 1fr;
+    }
+}
+
+.dashboard-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+}
+
+.dashboard-main {
+    min-width: 0;
+}
+
+/* Charts Placeholder */
+.dashboard-charts {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: var(--space-4);
+    margin-bottom: var(--space-5);
+}
+
+@media (max-width: 1024px) {
+    .dashboard-charts {
+        grid-template-columns: 1fr;
+    }
+}
