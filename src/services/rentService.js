@@ -14,10 +14,11 @@ const rentService = {
         return api.get(`/api/rent/payments/month/${month}`);
     },
 
-    searchPayments: (startDate, endDate) => {
-        return api.get('/api/rent/payments/search', {
-            params: { startDate, endDate }
-        });
+    searchPayments: (startDate, endDate, propertyId = null, roomId = null) => {
+        const params = { startDate, endDate };
+        if (propertyId) params.propertyId = propertyId;
+        if (roomId) params.roomId = roomId;
+        return api.get('/api/rent/payments/search', { params });
     },
 
     bulkRecordPayments: (paymentsData) => {
