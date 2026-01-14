@@ -104,6 +104,37 @@
     white-space: nowrap;
 }
 
+/* Submenu */
+.sidebar-submenu {
+    padding-left: calc(var(--space-4) + 20px);
+    margin-top: 2px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.sidebar-sublink {
+    display: block;
+    padding: var(--space-2) var(--space-3);
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 0.85rem;
+    border-radius: var(--radius-sm);
+    transition: all var(--transition-fast);
+}
+
+.sidebar-sublink:hover {
+    color: var(--text-primary);
+    background-color: var(--background-secondary);
+}
+
+.sidebar-sublink-active {
+    color: var(--primary);
+    background-color: transparent;
+    font-weight: 500;
+}
+
+
 /* Footer / User Section */
 .sidebar-footer {
     display: flex;

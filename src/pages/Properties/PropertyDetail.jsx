@@ -4,6 +4,7 @@ import { useToast } from '../../context/ToastContext';
 import propertyService from '../../services/propertyService';
 import floorService from '../../services/floorService';
 import roomService from '../../services/roomService';
+import tenantService from '../../services/tenantService';
 import Button from '../../components/common/Button';
 import Tabs, { TabPanel } from '../../components/common/Tabs';
 import Badge from '../../components/common/Badge';
@@ -318,7 +319,19 @@ export default function PropertyDetail() {
                     floors={floors}
                     onAddRoom={(floorId) => setRoomModal({ open: true, floorId })}
                     onBulkAddRooms={(floorId) => setBulkRoomModal({ open: true, floorId })}
-                    onRoomClick={(room) => console.log('Room clicked:', room)}
+                    onRoomClick={async (room) => {
+                        if (room.isOccupied) {
+                            try {
+                                const tenant = await tenantService.getTenantByRoom(room.id);
+                                if (tenant) {
+                                    navigate(`/tenants/${tenant.id}`);
+                                }
+                            } catch (error) {
+                                console.error('Failed to get tenant for room:', error);
+                                showToast('error', 'Failed to find tenant details');
+                            }
+                        }
+                    }}
                     onMoveIn={(room) => navigate(`/tenants/new?roomId=${room.id}`)}
                 />
             </TabPanel>

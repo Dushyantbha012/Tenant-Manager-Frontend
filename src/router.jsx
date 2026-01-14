@@ -23,6 +23,11 @@ import TenantList from './pages/Tenants/TenantList';
 import TenantDetail from './pages/Tenants/TenantDetail';
 import TenantForm from './pages/Tenants/TenantForm';
 
+// Payment Pages
+import PaymentList from './pages/Payments/PaymentList';
+import RecordPayment from './pages/Payments/RecordPayment';
+import DueReport from './pages/Payments/DueReport';
+
 // Routes
 import { ROUTES } from './utils/constants';
 
@@ -88,11 +93,20 @@ const router = createBrowserRouter([
                 path: 'tenants/:id/edit',
                 element: <TenantForm />,
             },
-            // Placeholder routes for Future Phases
+            // Payment routes
             {
                 path: 'payments',
-                element: <div style={{ padding: '24px' }}><h2>Payments (Coming in Phase 4)</h2></div>,
+                element: <PaymentList />,
             },
+            {
+                path: 'payments/record',
+                element: <RecordPayment />,
+            },
+            {
+                path: 'payments/due',
+                element: <DueReport />,
+            },
+            // Placeholder routes for Future Phases
             {
                 path: 'profile',
                 element: <div style={{ padding: '24px' }}><h2>Profile (Coming in Phase 5)</h2></div>,

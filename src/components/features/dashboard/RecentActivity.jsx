@@ -1,83 +1,69 @@
-import { formatRelativeTime, formatCurrency } from '../../../utils/formatters';
-import './RecentActivity.css';
+import React from 'react';
+import { CreditCard, UserPlus, FileText, UserMinus, ArrowRight } from 'lucide-react';
 
-// Mock activity data for demonstration
-const mockActivities = [
-    {
-        id: 1,
-        type: 'payment',
-        icon: '💳',
-        message: 'Payment received from Rahul Sharma',
-        amount: 12000,
-        time: new Date(Date.now() - 2 * 60000), // 2 minutes ago
-    },
-    {
-        id: 2,
-        type: 'tenant',
-        icon: '🏠',
-        message: 'New tenant added: Priya Singh',
-        detail: 'Room 204',
-        time: new Date(Date.now() - 60 * 60000), // 1 hour ago
-    },
-    {
-        id: 3,
-        type: 'agreement',
-        icon: '📝',
-        message: 'Agreement updated for Room 105',
-        time: new Date(Date.now() - 3 * 60 * 60000), // 3 hours ago
-    },
-    {
-        id: 4,
-        type: 'moveout',
-        icon: '👋',
-        message: 'Tenant moved out: Amit Kumar',
-        detail: 'Room 108',
-        time: new Date(Date.now() - 24 * 60 * 60000), // Yesterday
-    },
-];
+const RecentlyActivityItem = ({ activity }) => {
+    const { type, title, subtitle, time, status } = activity;
 
-export default function RecentActivity({ activities = mockActivities }) {
+    const getIcon = () => {
+        switch (type) {
+            case 'PAYMENT': return <CreditCard className="w-5 h-5 text-success" />;
+            case 'MOVE_IN': return <UserPlus className="w-5 h-5 text-info" />; // info usually blue
+            case 'AGREEMENT': return <FileText className="w-5 h-5 text-warning" />;
+            case 'MOVE_OUT': return <UserMinus className="w-5 h-5 text-danger" />;
+            default: return <FileText className="w-5 h-5 text-text-secondary" />;
+        }
+    };
+
+    const getBgColor = () => {
+        switch (type) {
+            case 'PAYMENT': return 'bg-emerald-50';
+            case 'MOVE_IN': return 'bg-blue-50';
+            case 'AGREEMENT': return 'bg-amber-50';
+            case 'MOVE_OUT': return 'bg-red-50';
+            default: return 'bg-gray-50';
+        }
+    };
+
     return (
-        <div className="recent-activity">
-            <div className="recent-activity-header">
-                <h3 className="recent-activity-title">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
-                        <polyline points="14 2 14 8 20 8" />
-                        <line x1="16" y1="13" x2="8" y2="13" />
-                        <line x1="16" y1="17" x2="8" y2="17" />
-                        <polyline points="10 9 9 9 8 9" />
-                    </svg>
-                    Recent Activity
-                </h3>
-                <button className="recent-activity-see-all">See All</button>
+        <div className="flex items-start gap-4 p-4 border-b border-border last:border-0 hover:bg-gray-50 transition-colors">
+            <div className={`p-2 rounded-lg ${getBgColor()} shrink-0`}>
+                {getIcon()}
             </div>
+            <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-text-primary truncate">{title}</p>
+                {subtitle && <p className="text-xs text-text-secondary mt-0.5">{subtitle}</p>}
+            </div>
+            <div className="text-right shrink-0">
+                <p className="text-xs text-text-secondary">{time}</p>
+            </div>
+        </div>
+    );
+};
 
-            <div className="recent-activity-list">
-                {activities.length === 0 ? (
-                    <div className="recent-activity-empty">
-                        <p>No recent activity</p>
+const RecentActivity = ({ activities }) => {
+    return (
+        <div className="bg-surface rounded-xl shadow-sm border border-border h-full flex flex-col">
+            <div className="p-6 border-b border-border flex justify-between items-center">
+                <h3 className="text-lg font-bold text-text-primary">Recent Activity</h3>
+                <button className="text-primary text-sm font-medium hover:text-primary-hover flex items-center gap-1">
+                    See All <ArrowRight className="w-4 h-4" />
+                </button>
+            </div>
+            <div className="flex-1 overflow-auto max-h-[350px]">
+                {activities && activities.length > 0 ? (
+                    <div className="flex flex-col">
+                        {activities.map((activity) => (
+                            <RecentlyActivityItem key={activity.id} activity={activity} />
+                        ))}
                     </div>
                 ) : (
-                    activities.map((activity) => (
-                        <div key={activity.id} className="activity-item">
-                            <span className="activity-icon">{activity.icon}</span>
-                            <div className="activity-content">
-                                <p className="activity-message">
-                                    {activity.message}
-                                    {activity.amount && (
-                                        <span className="activity-amount">{formatCurrency(activity.amount)}</span>
-                                    )}
-                                </p>
-                                {activity.detail && (
-                                    <span className="activity-detail">{activity.detail}</span>
-                                )}
-                            </div>
-                            <span className="activity-time">{formatRelativeTime(activity.time)}</span>
-                        </div>
-                    ))
+                    <div className="p-8 text-center text-text-secondary">
+                        No recent activity.
+                    </div>
                 )}
             </div>
         </div>
     );
-}
+};
+
+export default RecentActivity;

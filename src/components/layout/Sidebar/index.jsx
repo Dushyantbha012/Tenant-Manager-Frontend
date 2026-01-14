@@ -77,14 +77,32 @@ export default function Sidebar({ mobileOpen = false, onCloseMobile }) {
                             <NavLink
                                 to={item.path}
                                 className={({ isActive }) =>
-                                    `sidebar-link ${isActive ? 'sidebar-link-active' : ''}`
+                                    `sidebar-link ${isActive && (!item.children || item.children.every(child => location.pathname !== child.path)) ? 'sidebar-link-active' : ''}`
                                 }
-                                end={item.path === '/'}
+                                end={item.path === '/' && !item.children}
                                 onClick={handleNavClick}
                             >
                                 <span className="sidebar-icon">{icons[item.icon]}</span>
                                 <span className="sidebar-label">{item.label}</span>
                             </NavLink>
+                            {item.children && (
+                                <ul className="sidebar-submenu">
+                                    {item.children.map((child) => (
+                                        <li key={child.path}>
+                                            <NavLink
+                                                to={child.path}
+                                                className={({ isActive }) =>
+                                                    `sidebar-sublink ${isActive ? 'sidebar-sublink-active' : ''}`
+                                                }
+                                                onClick={handleNavClick}
+                                                end
+                                            >
+                                                {child.label}
+                                            </NavLink>
+                                        </li>
+                                    ))}
+                                </ul>
+                            )}
                         </li>
                     ))}
                 </ul>

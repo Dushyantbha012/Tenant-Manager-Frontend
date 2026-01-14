@@ -2,9 +2,11 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useToast } from '../../context/ToastContext';
 import tenantService from '../../services/tenantService';
+import rentService from '../../services/rentService';
 import Button from '../../components/common/Button';
 import Card from '../../components/common/Card';
 import Badge from '../../components/common/Badge';
+import Table from '../../components/common/Table';
 import Tabs from '../../components/common/Tabs';
 import Modal, { ModalFooter } from '../../components/common/Modal';
 import Skeleton from '../../components/common/Skeleton';
@@ -23,12 +25,20 @@ export default function TenantDetail() {
     const [tenant, setTenant] = useState(null);
     const [loading, setLoading] = useState(true);
     const [activeTab, setActiveTab] = useState('overview');
+    const [payments, setPayments] = useState([]);
+    const [paymentsLoading, setPaymentsLoading] = useState(false);
     const [deleteModal, setDeleteModal] = useState(false);
     const [deleting, setDeleting] = useState(false);
 
     useEffect(() => {
         fetchTenant();
     }, [id]);
+
+    useEffect(() => {
+        if (activeTab === 'payments' && tenant) {
+            fetchPayments();
+        }
+    }, [activeTab, tenant]);
 
     const fetchTenant = async () => {
         setLoading(true);
@@ -41,6 +51,19 @@ export default function TenantDetail() {
             navigate('/tenants');
         } finally {
             setLoading(false);
+        }
+    };
+
+    const fetchPayments = async () => {
+        setPaymentsLoading(true);
+        try {
+            const data = await rentService.getTenantPaymentHistory(id);
+            setPayments(data);
+        } catch (error) {
+            console.error('Failed to fetch payments:', error);
+            showToast('error', 'Failed to load payment history');
+        } finally {
+            setPaymentsLoading(false);
         }
     };
 
@@ -202,11 +225,29 @@ export default function TenantDetail() {
                 )}
 
                 {activeTab === 'payments' && (
-                    <Card>
-                        <div className="placeholder-content">
-                            <p>Payment history will be available in Phase 4.</p>
-                            <Button variant="outline" disabled>Record Payment</Button>
-                        </div>
+                    <Card title="Payment History"
+                        action={
+                            <Button
+                                variant="primary"
+                                size="sm"
+                                onClick={() => navigate('/payments/record', { state: { tenantId: tenant.id } })}
+                            >
+                                Record Payment
+                            </Button>
+                        }
+                    >
+                        <Table
+                            columns={[
+                                { header: 'Date', accessor: 'paymentDate', render: (val) => formatDate(val) },
+                                { header: 'Month', accessor: 'paymentForMonth', render: (val) => formatDate(val, { month: 'long', year: 'numeric' }) },
+                                { header: 'Amount', accessor: 'amountPaid', render: (val) => formatCurrency(val) },
+                                { header: 'Mode', accessor: 'paymentMode' },
+                                { header: 'Reference', accessor: 'transactionReference', render: (val) => val || '-' },
+                            ]}
+                            data={payments}
+                            loading={paymentsLoading}
+                            emptyMessage="No payments recorded yet"
+                        />
                     </Card>
                 )}
 
