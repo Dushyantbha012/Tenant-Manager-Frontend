@@ -1,0 +1,159 @@
+.tenant-detail-page {
+    padding-bottom: var(--space-6);
+}
+
+.back-link {
+    margin-bottom: var(--space-2);
+}
+
+.back-link a {
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.tenant-status-badge {
+    margin-left: var(--space-3);
+    display: inline-flex;
+}
+
+.tenant-profile-card {
+    background: var(--surface);
+    border-radius: var(--radius-md);
+    padding: var(--space-6);
+    border: 1px solid var(--border);
+    margin-bottom: var(--space-6);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--space-6);
+}
+
+.profile-main {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+}
+
+.profile-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: var(--radius-full);
+    background-color: var(--primary-light, #e0e7ff);
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+.profile-info h2 {
+    margin: 0 0 var(--space-2) 0;
+    font-size: 1.5rem;
+    color: var(--text-primary);
+}
+
+.profile-meta {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    color: var(--text-secondary);
+    font-size: 0.9375rem;
+}
+
+.profile-stats {
+    display: flex;
+    gap: var(--space-8);
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+}
+
+.stat-item label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    letter-spacing: 0.05em;
+    font-weight: 600;
+}
+
+.stat-item .font-medium {
+    font-size: 1.125rem;
+    color: var(--text-primary);
+}
+
+.price-text {
+    font-size: 1.25rem !important;
+    font-weight: 700 !important;
+}
+
+.tenant-tabs {
+    margin-bottom: var(--space-6);
+}
+
+.overview-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: var(--space-6);
+}
+
+.detail-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    padding: var(--space-3) 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.detail-row:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.detail-label {
+    color: var(--text-secondary);
+    font-size: 0.9375rem;
+}
+
+.detail-value {
+    color: var(--text-primary);
+    font-weight: 500;
+    font-size: 0.9375rem;
+    text-align: right;
+}
+
+.placeholder-content {
+    padding: var(--space-8);
+    text-align: center;
+    color: var(--text-secondary);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-4);
+}
+
+@media (max-width: 768px) {
+    .tenant-profile-card {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .profile-stats {
+        width: 100%;
+        justify-content: space-between;
+        gap: var(--space-4);
+    }
+
+    .overview-grid {
+        grid-template-columns: 1fr;
+    }
+}

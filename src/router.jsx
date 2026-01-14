@@ -18,6 +18,11 @@ import PropertyList from './pages/Properties/PropertyList';
 import PropertyDetail from './pages/Properties/PropertyDetail';
 import PropertyForm from './pages/Properties/PropertyForm';
 
+// Tenant Pages
+import TenantList from './pages/Tenants/TenantList';
+import TenantDetail from './pages/Tenants/TenantDetail';
+import TenantForm from './pages/Tenants/TenantForm';
+
 // Routes
 import { ROUTES } from './utils/constants';
 
@@ -66,15 +71,24 @@ const router = createBrowserRouter([
                 path: 'properties/:id/edit',
                 element: <PropertyForm />,
             },
-            // Placeholder routes for Phase 3+
+            // Tenant routes
             {
                 path: 'tenants',
-                element: <div style={{ padding: '24px' }}><h2>Tenants (Coming in Phase 3)</h2></div>,
+                element: <TenantList />,
             },
             {
                 path: 'tenants/new',
-                element: <div style={{ padding: '24px' }}><h2>Add Tenant (Coming in Phase 3)</h2></div>,
+                element: <TenantForm />,
             },
+            {
+                path: 'tenants/:id',
+                element: <TenantDetail />,
+            },
+            {
+                path: 'tenants/:id/edit',
+                element: <TenantForm />,
+            },
+            // Placeholder routes for Future Phases
             {
                 path: 'payments',
                 element: <div style={{ padding: '24px' }}><h2>Payments (Coming in Phase 4)</h2></div>,
