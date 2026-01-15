@@ -117,3 +117,13 @@
     color: var(--text-secondary);
     margin: 0;
 }
+
+@media (max-width: 768px) {
+    .recent-activity-header {
+        padding: var(--space-3);
+    }
+
+    .activity-item {
+        padding: var(--space-3);
+    }
+}

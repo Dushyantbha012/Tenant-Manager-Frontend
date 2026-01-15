@@ -3,6 +3,7 @@
 .app-layout {
     display: flex;
     min-height: 100vh;
+    isolation: isolate;
 }
 
 /* Main Content Area */
@@ -22,6 +23,9 @@
     padding: 0 var(--space-4);
     background-color: var(--surface);
     border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: var(--z-sticky);
 }
 
 .app-mobile-menu-toggle {
@@ -59,6 +63,7 @@
     inset: 0;
     background-color: rgba(0, 0, 0, 0.5);
     z-index: calc(var(--z-fixed) - 1);
+    backdrop-filter: blur(2px);
     animation: fadeIn var(--transition-fast) ease-out;
 }
 

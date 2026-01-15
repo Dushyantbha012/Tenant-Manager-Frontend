@@ -228,7 +228,7 @@
     .sidebar {
         transform: translateX(-100%);
         box-shadow: var(--shadow-xl);
-        transition: transform var(--transition-base);
+        transition: transform var(--transition-base) ease-in-out;
     }
 
     .sidebar.sidebar-mobile-open {

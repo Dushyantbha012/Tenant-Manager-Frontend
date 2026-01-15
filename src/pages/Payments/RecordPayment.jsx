@@ -141,8 +141,10 @@ export default function RecordPayment() {
                                             onClick={() => handleTenantSelect(tenant)}
                                         >
                                             <div className="tenant-info">
-                                                <strong>{tenant.fullName}</strong>
-                                                <span className="text-secondary">Room {tenant.roomNumber}</span>
+                                                <strong >{tenant.fullName} • Room {tenant.roomNumber}
+                                                    {tenant.propertyName && ` • ${tenant.propertyName}`}</strong>
+
+
                                             </div>
                                             <span className="tenant-phone">{tenant.phone}</span>
                                         </div>
@@ -155,8 +157,9 @@ export default function RecordPayment() {
                     {step > 1 && selectedTenant && (
                         <div className="selected-preview">
                             <div className="tenant-info">
-                                <strong>{selectedTenant.fullName}</strong>
-                                <span className="text-secondary">Room {selectedTenant.roomNumber}</span>
+                                <strong >{selectedTenant.fullName} • Room {selectedTenant.roomNumber}
+                                    {selectedTenant.propertyName && ` • ${selectedTenant.propertyName}`}</strong>
+
                             </div>
                             <Button variant="text" onClick={() => setStep(1)}>Change</Button>
                         </div>

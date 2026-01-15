@@ -66,7 +66,7 @@
   --tracking-tight: -0.02em;
   --tracking-normal: 0;
   --tracking-wide: 0.025em;
-
+  
   /* ========== Spacing Scale ========== */
   --space-0: 0;
   --space-1: 0.25rem;      /* 4px */
@@ -124,6 +124,24 @@
   --sidebar-collapsed-width: 72px;
   --header-height: 64px;
   --container-max-width: 1400px;
+}
+
+/* ========== Mobile Adjustments ========== */
+@media (max-width: 768px) {
+  :root {
+      /* Adjust fonts for smaller screens */
+      --text-3xl: 1.75rem;   /* 28px */
+      --text-4xl: 2.25rem;   /* 36px */
+      
+      /* Adjust spacing */
+      --space-6: 1.5rem;
+      --space-8: 2rem;
+      --space-10: 3rem;
+      --space-12: 4rem;
+      
+      /* Header height smaller on mobile */
+      --header-height: 56px;
+  }
 }
 
 /* ========== Dark Mode ========== */

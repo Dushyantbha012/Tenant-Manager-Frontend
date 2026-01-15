@@ -132,3 +132,13 @@
     color: var(--text-secondary);
     margin: 0;
 }
+
+@media (max-width: 768px) {
+    .pending-alerts {
+        padding: var(--space-4);
+    }
+
+    .pending-alert {
+        padding: var(--space-3);
+    }
+}
