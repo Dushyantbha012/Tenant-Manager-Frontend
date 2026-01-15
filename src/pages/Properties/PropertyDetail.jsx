@@ -1,18 +1,23 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useToast } from '../../context/ToastContext';
 import propertyService from '../../services/propertyService';
 import floorService from '../../services/floorService';
 import roomService from '../../services/roomService';
 import tenantService from '../../services/tenantService';
+import rentService from '../../services/rentService';
 import Button from '../../components/common/Button';
 import Tabs, { TabPanel } from '../../components/common/Tabs';
 import Badge from '../../components/common/Badge';
 import Modal, { ModalFooter } from '../../components/common/Modal';
 import Input from '../../components/common/Input';
+import Table from '../../components/common/Table';
 import FloorList from '../../components/features/properties/FloorList';
+import TenantHistoryModal from '../../components/features/properties/TenantHistoryModal';
 import Dropdown, { MoreTrigger } from '../../components/common/Dropdown';
 import Skeleton from '../../components/common/Skeleton';
+import SearchInput from '../../components/common/SearchInput';
+import { formatCurrency, formatDate, formatPhone } from '../../utils/formatters';
 import './PropertyDetail.css';
 
 /**
@@ -29,11 +34,25 @@ export default function PropertyDetail() {
     const [loading, setLoading] = useState(true);
     const [activeTab, setActiveTab] = useState('floors');
 
+    // Tenants and Payments data
+    const [tenants, setTenants] = useState([]);
+    const [tenantsLoading, setTenantsLoading] = useState(false);
+    const [payments, setPayments] = useState([]);
+    const [paymentsLoading, setPaymentsLoading] = useState(false);
+
+    // Dues data for room coloring
+    const [roomDues, setRoomDues] = useState({});
+
+    // Search states
+    const [tenantSearch, setTenantSearch] = useState('');
+    const [paymentSearch, setPaymentSearch] = useState('');
+
     // Modal states
     const [floorModal, setFloorModal] = useState({ open: false, floorId: null });
     const [roomModal, setRoomModal] = useState({ open: false, floorId: null });
     const [bulkFloorModal, setBulkFloorModal] = useState(false);
     const [bulkRoomModal, setBulkRoomModal] = useState({ open: false, floorId: null });
+    const [historyModal, setHistoryModal] = useState({ open: false, room: null });
 
     // Form states
     const [floorForm, setFloorForm] = useState({ floorNumber: '', floorName: '' });
@@ -50,17 +69,19 @@ export default function PropertyDetail() {
     const fetchPropertyData = async () => {
         try {
             setLoading(true);
+
             const [propertyRes, floorsRes] = await Promise.all([
                 propertyService.getById(id),
                 floorService.getByPropertyId(id),
             ]);
             setProperty(propertyRes.data);
 
-            // Fetch rooms for each floor
+            // Fetch rooms with tenant info and due amounts for each floor using the new endpoint
             const floorsWithRooms = await Promise.all(
                 (floorsRes.data || []).map(async (floor) => {
                     try {
-                        const roomsRes = await roomService.getByFloorId(floor.id);
+                        const roomsRes = await roomService.getRoomsInfoByFloorId(floor.id);
+                        // Rooms already have paymentStatus, tenantId, tenantName, dueAmount from backend
                         return { ...floor, rooms: roomsRes.data || [] };
                     } catch {
                         return { ...floor, rooms: [] };
@@ -75,6 +96,77 @@ export default function PropertyDetail() {
             setLoading(false);
         }
     };
+
+    // Fetch tenants when tenants tab is activated
+    const fetchTenants = async () => {
+        if (tenantsLoading || tenants.length > 0) return;
+        setTenantsLoading(true);
+        try {
+            const data = await tenantService.getAllTenants({ propertyId: id });
+            setTenants(data || []);
+        } catch (error) {
+            console.error('Failed to fetch tenants:', error);
+            showToast('error', 'Failed to load tenants');
+        } finally {
+            setTenantsLoading(false);
+        }
+    };
+
+    // Fetch payments when payments tab is activated
+    const fetchPayments = async () => {
+        if (paymentsLoading || payments.length > 0) return;
+        setPaymentsLoading(true);
+        try {
+            // Get payments for the last 6 months
+            const endDate = new Date();
+            const startDate = new Date();
+            startDate.setMonth(startDate.getMonth() - 6);
+            const response = await rentService.searchPayments(
+                startDate.toISOString().split('T')[0],
+                endDate.toISOString().split('T')[0],
+                id
+            );
+            setPayments(response.data || []);
+        } catch (error) {
+            console.error('Failed to fetch payments:', error);
+            showToast('error', 'Failed to load payments');
+        } finally {
+            setPaymentsLoading(false);
+        }
+    };
+
+    // Trigger data fetch when tab changes
+    useEffect(() => {
+        if (activeTab === 'tenants') {
+            fetchTenants();
+        } else if (activeTab === 'payments') {
+            fetchPayments();
+        }
+    }, [activeTab]);
+
+    // Filtered tenants based on search
+    const filteredTenants = useMemo(() => {
+        if (!tenantSearch.trim()) return tenants;
+
+        const query = tenantSearch.toLowerCase();
+        return tenants.filter(tenant =>
+            tenant.fullName?.toLowerCase().includes(query) ||
+            tenant.phone?.includes(query) ||
+            tenant.roomNumber?.toString().toLowerCase().includes(query)
+        );
+    }, [tenants, tenantSearch]);
+
+    // Filtered payments based on search
+    const filteredPayments = useMemo(() => {
+        if (!paymentSearch.trim()) return payments;
+
+        const query = paymentSearch.toLowerCase();
+        return payments.filter(payment =>
+            payment.tenantName?.toLowerCase().includes(query) ||
+            payment.roomNumber?.toString().toLowerCase().includes(query) ||
+            payment.paymentMode?.toLowerCase().includes(query)
+        );
+    }, [payments, paymentSearch]);
 
     // Add floor
     const handleAddFloor = async () => {
@@ -319,32 +411,143 @@ export default function PropertyDetail() {
                     floors={floors}
                     onAddRoom={(floorId) => setRoomModal({ open: true, floorId })}
                     onBulkAddRooms={(floorId) => setBulkRoomModal({ open: true, floorId })}
-                    onRoomClick={async (room) => {
-                        if (room.isOccupied) {
-                            try {
-                                const tenant = await tenantService.getTenantByRoom(room.id);
-                                if (tenant) {
-                                    navigate(`/tenants/${tenant.id}`);
-                                }
-                            } catch (error) {
-                                console.error('Failed to get tenant for room:', error);
-                                showToast('error', 'Failed to find tenant details');
-                            }
+                    onRoomClick={(room) => {
+                        // tenantId is now available directly from the room info
+                        if (room.isOccupied && room.tenantId) {
+                            navigate(`/tenants/${room.tenantId}`);
                         }
                     }}
                     onMoveIn={(room) => navigate(`/tenants/new?roomId=${room.id}`)}
+                    onRecordPayment={(room) => {
+                        // tenantId is now available directly from the room info
+                        if (room.tenantId) {
+                            navigate('/payments/record', { state: { tenantId: room.tenantId } });
+                        } else {
+                            showToast('error', 'No tenant found for this room');
+                        }
+                    }}
+                    onViewHistory={(room) => setHistoryModal({ open: true, room })}
                 />
             </TabPanel>
 
             <TabPanel active={activeTab === 'tenants'}>
-                <div className="coming-soon">
-                    <p>Tenant list coming in Phase 3</p>
+                <div className="tenants-tab-content">
+                    <div className="tab-header">
+                        <h3>Property Tenants</h3>
+                        <Button
+                            variant="primary"
+                            size="sm"
+                            onClick={() => navigate(`/tenants/new`)}
+                        >
+                            Add Tenant
+                        </Button>
+                    </div>
+                    <div className="tab-search">
+                        <SearchInput
+                            placeholder="Search tenants by name, phone, or room..."
+                            value={tenantSearch}
+                            onSearch={setTenantSearch}
+                        />
+                    </div>
+                    <Table
+                        columns={[
+                            {
+                                header: 'Tenant',
+                                accessor: 'fullName',
+                                render: (row) => (
+                                    <div className="tenant-cell">
+                                        <span className="tenant-name">{row.fullName}</span>
+                                        <span className="tenant-phone">{formatPhone(row.phone)}</span>
+                                    </div>
+                                )
+                            },
+                            {
+                                header: 'Room',
+                                accessor: 'roomNumber',
+                                render: (row) => `Room ${row.roomNumber}`
+                            },
+                            {
+                                header: 'Rent',
+                                accessor: 'rentAmount',
+                                render: (row) => formatCurrency(row.rentAmount)
+                            },
+                            {
+                                header: 'Move-in',
+                                accessor: 'moveInDate',
+                                render: (row) => formatDate(row.moveInDate)
+                            },
+                            {
+                                header: 'Status',
+                                accessor: 'status',
+                                render: (row) => (
+                                    <Badge variant={row.status === 'ACTIVE' ? 'success' : 'neutral'}>
+                                        {row.status}
+                                    </Badge>
+                                )
+                            }
+                        ]}
+                        data={filteredTenants}
+                        loading={tenantsLoading}
+                        onRowClick={(tenant) => navigate(`/tenants/${tenant.id}`)}
+                        emptyMessage={tenantSearch ? "No tenants match your search." : "No tenants in this property yet."}
+                    />
                 </div>
             </TabPanel>
 
             <TabPanel active={activeTab === 'payments'}>
-                <div className="coming-soon">
-                    <p>Payment history coming in Phase 4</p>
+                <div className="payments-tab-content">
+                    <div className="tab-header">
+                        <h3>Payment History</h3>
+                        <Button
+                            variant="primary"
+                            size="sm"
+                            onClick={() => navigate('/payments/record')}
+                        >
+                            Record Payment
+                        </Button>
+                    </div>
+                    <div className="tab-search">
+                        <SearchInput
+                            placeholder="Search by tenant, room, or payment mode..."
+                            value={paymentSearch}
+                            onSearch={setPaymentSearch}
+                        />
+                    </div>
+                    <Table
+                        columns={[
+                            {
+                                header: 'Date',
+                                accessor: 'paymentDate',
+                                render: (row) => formatDate(row.paymentDate)
+                            },
+                            {
+                                header: 'Tenant',
+                                accessor: 'tenantName'
+                            },
+                            {
+                                header: 'Room',
+                                accessor: 'roomNumber',
+                                render: (row) => `Room ${row.roomNumber}`
+                            },
+                            {
+                                header: 'Amount',
+                                accessor: 'amountPaid',
+                                render: (row) => formatCurrency(row.amountPaid)
+                            },
+                            {
+                                header: 'For Month',
+                                accessor: 'paymentForMonth',
+                                render: (row) => formatDate(row.paymentForMonth, { month: 'short', year: 'numeric' })
+                            },
+                            {
+                                header: 'Mode',
+                                accessor: 'paymentMode'
+                            }
+                        ]}
+                        data={filteredPayments}
+                        loading={paymentsLoading}
+                        emptyMessage={paymentSearch ? "No payments match your search." : "No payments recorded for this property."}
+                    />
                 </div>
             </TabPanel>
 
@@ -505,6 +708,13 @@ export default function PropertyDetail() {
                     </Button>
                 </ModalFooter>
             </Modal>
+
+            {/* Tenant History Modal */}
+            <TenantHistoryModal
+                open={historyModal.open}
+                onClose={() => setHistoryModal({ open: false, room: null })}
+                room={historyModal.room}
+            />
         </div>
     );
 }

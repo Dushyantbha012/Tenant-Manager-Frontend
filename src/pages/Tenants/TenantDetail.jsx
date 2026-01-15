@@ -27,6 +27,7 @@ export default function TenantDetail() {
     const [activeTab, setActiveTab] = useState('overview');
     const [payments, setPayments] = useState([]);
     const [paymentsLoading, setPaymentsLoading] = useState(false);
+    const [dueInfo, setDueInfo] = useState(null);
     const [deleteModal, setDeleteModal] = useState(false);
     const [deleting, setDeleting] = useState(false);
 
@@ -45,6 +46,15 @@ export default function TenantDetail() {
         try {
             const data = await tenantService.getTenantById(id);
             setTenant(data);
+            // Fetch due info for current month
+            try {
+                const currentMonth = new Date().toISOString().slice(0, 10);
+                const dueRes = await rentService.getTenantDue(id, currentMonth);
+                setDueInfo(dueRes.data);
+            } catch (dueError) {
+                console.error('Failed to fetch due info:', dueError);
+                // Not critical - just means no due info available
+            }
         } catch (error) {
             console.error('Failed to fetch tenant:', error);
             showToast('error', 'Failed to load tenant details');
@@ -57,8 +67,8 @@ export default function TenantDetail() {
     const fetchPayments = async () => {
         setPaymentsLoading(true);
         try {
-            const data = await rentService.getTenantPaymentHistory(id);
-            setPayments(data);
+            const response = await rentService.getTenantPaymentHistory(id);
+            setPayments(response.data || []);
         } catch (error) {
             console.error('Failed to fetch payments:', error);
             showToast('error', 'Failed to load payment history');
@@ -142,7 +152,9 @@ export default function TenantDetail() {
                         <h2>{tenant.fullName}</h2>
                         <div className="profile-meta">
                             <span>📧 {tenant.email || 'No email'}</span>
-                            <span>📞 {formatPhone(tenant.phone)}</span>
+                            <a href={`tel:${tenant.phone}`} className="phone-link">
+                                📞 {formatPhone(tenant.phone)}
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -162,6 +174,24 @@ export default function TenantDetail() {
                         <label>Lease Start</label>
                         <div className="font-medium">{formatDate(tenant.moveInDate)}</div>
                     </div>
+                    {dueInfo && (
+                        <div className={`stat-item due-status ${dueInfo.dueAmount > 0 ? 'has-due' : 'no-due'}`}>
+                            <label>Current Month Due</label>
+                            <div className={`font-medium ${dueInfo.dueAmount > 0 ? 'text-danger' : 'text-success'}`}>
+                                {formatCurrency(dueInfo.dueAmount)}
+                            </div>
+                            {dueInfo.dueAmount > 0 && (
+                                <Button
+                                    variant="primary"
+                                    size="sm"
+                                    onClick={() => navigate('/payments/record', { state: { tenantId: tenant.id } })}
+                                    style={{ marginTop: '8px' }}
+                                >
+                                    Record Payment
+                                </Button>
+                            )}
+                        </div>
+                    )}
                 </div>
             </div>
 
@@ -204,7 +234,13 @@ export default function TenantDetail() {
                                 </div>
                                 <div className="detail-row">
                                     <span className="detail-label">Phone</span>
-                                    <span className="detail-value">{tenant.emergencyContactPhone ? formatPhone(tenant.emergencyContactPhone) : '-'}</span>
+                                    <span className="detail-value">
+                                        {tenant.emergencyContactPhone ? (
+                                            <a href={`tel:${tenant.emergencyContactPhone}`} className="phone-link">
+                                                {formatPhone(tenant.emergencyContactPhone)}
+                                            </a>
+                                        ) : '-'}
+                                    </span>
                                 </div>
                             </div>
                         </Card>
@@ -238,11 +274,11 @@ export default function TenantDetail() {
                     >
                         <Table
                             columns={[
-                                { header: 'Date', accessor: 'paymentDate', render: (val) => formatDate(val) },
-                                { header: 'Month', accessor: 'paymentForMonth', render: (val) => formatDate(val, { month: 'long', year: 'numeric' }) },
-                                { header: 'Amount', accessor: 'amountPaid', render: (val) => formatCurrency(val) },
+                                { header: 'Date', accessor: 'paymentDate', render: (row) => formatDate(row.paymentDate) },
+                                { header: 'Month', accessor: 'paymentForMonth', render: (row) => formatDate(row.paymentForMonth, { month: 'long', year: 'numeric' }) },
+                                { header: 'Amount', accessor: 'amountPaid', render: (row) => formatCurrency(row.amountPaid) },
                                 { header: 'Mode', accessor: 'paymentMode' },
-                                { header: 'Reference', accessor: 'transactionReference', render: (val) => val || '-' },
+                                { header: 'Reference', accessor: 'transactionReference', render: (row) => row.transactionReference || '-' },
                             ]}
                             data={payments}
                             loading={paymentsLoading}

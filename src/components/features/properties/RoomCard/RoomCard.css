@@ -21,18 +21,39 @@
     box-shadow: 0 0 0 3px var(--primary-light);
 }
 
-/* Status variants */
-.room-occupied {
-    border-left: 3px solid var(--success);
-}
-
+/* Status variants - Color coded based on payment status */
+/* Vacant rooms = Grey */
 .room-vacant {
-    border-left: 3px solid var(--warning);
+    border-left: 4px solid var(--text-tertiary);
+    background-color: var(--surface-hover);
 }
 
 .room-vacant:hover {
-    border-color: var(--primary);
-    border-left-color: var(--primary);
+    border-color: var(--border);
+    border-left-color: var(--text-tertiary);
+    background-color: var(--surface);
+}
+
+/* Paid rooms = Green */
+.room-paid {
+    border-left: 4px solid var(--success);
+    background-color: rgba(16, 185, 129, 0.05);
+}
+
+.room-paid:hover {
+    border-color: var(--success);
+    background-color: rgba(16, 185, 129, 0.1);
+}
+
+/* Due/Unpaid rooms = Red */
+.room-due {
+    border-left: 4px solid var(--danger);
+    background-color: rgba(239, 68, 68, 0.05);
+}
+
+.room-due:hover {
+    border-color: var(--danger);
+    background-color: rgba(239, 68, 68, 0.1);
 }
 
 /* Compact mode */
@@ -86,6 +107,11 @@
     color: var(--text-secondary);
 }
 
+.room-rent.has-due {
+    color: var(--danger, #ef4444);
+    font-weight: var(--font-semibold);
+}
+
 .room-type {
     margin: 0;
     font-size: var(--text-xs);
@@ -110,4 +136,50 @@
 .room-move-in-btn:hover {
     background-color: var(--primary);
     color: white;
+}
+
+/* Room Actions */
+.room-actions {
+    display: flex;
+    gap: var(--space-1);
+    margin-top: var(--space-2);
+    flex-wrap: wrap;
+}
+
+.room-action-btn {
+    padding: var(--space-1) var(--space-2);
+    font-size: var(--text-xs);
+    font-weight: var(--font-medium);
+    background-color: var(--surface-hover);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.room-action-btn:hover {
+    background-color: var(--border);
+}
+
+.room-pay-btn {
+    color: var(--success);
+}
+
+.room-pay-btn:hover {
+    background-color: var(--success);
+    color: white;
+    border-color: var(--success);
+}
+
+.room-history-btn {
+    color: var(--text-secondary);
+}
+
+.room-history-btn:hover {
+    background-color: var(--primary-light);
+    color: var(--primary);
+    border-color: var(--primary);
 }

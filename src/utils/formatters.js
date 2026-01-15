@@ -27,14 +27,23 @@ export function formatCurrency(amount) {
 export function formatDate(date, options = {}) {
     if (!date) return '';
 
-    const defaultOptions = {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
-        ...options,
-    };
+    try {
+        const dateObj = new Date(date);
+        // Check if date is valid
+        if (isNaN(dateObj.getTime())) return '';
 
-    return new Intl.DateTimeFormat('en-IN', defaultOptions).format(new Date(date));
+        const defaultOptions = {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            ...options,
+        };
+
+        return new Intl.DateTimeFormat('en-IN', defaultOptions).format(dateObj);
+    } catch (error) {
+        console.error('Error formatting date:', error);
+        return '';
+    }
 }
 
 /**

@@ -158,6 +158,48 @@
     gap: var(--space-2);
 }
 
+/* Tab Content Styles */
+.tenants-tab-content,
+.payments-tab-content {
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: var(--space-4);
+}
+
+.tab-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--space-3);
+}
+
+.tab-header h3 {
+    margin: 0;
+    font-size: var(--text-lg);
+    font-weight: var(--font-semibold);
+}
+
+.tab-search {
+    margin-bottom: var(--space-4);
+}
+
+.tenant-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.tenant-name {
+    font-weight: var(--font-medium);
+    color: var(--text-primary);
+}
+
+.tenant-phone {
+    font-size: var(--text-xs);
+    color: var(--text-secondary);
+}
+
 /* Coming Soon */
 .coming-soon {
     text-align: center;

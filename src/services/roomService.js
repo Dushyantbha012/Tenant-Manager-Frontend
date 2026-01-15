@@ -13,6 +13,13 @@ const roomService = {
     getByFloorId: (floorId) => api.get(`/api/floors/${floorId}/rooms`),
 
     /**
+     * Get rooms with tenant and due info on a floor
+     * @param {number} floorId - Floor ID
+     * @returns {Promise} Rooms array with tenant info and due amounts
+     */
+    getRoomsInfoByFloorId: (floorId) => api.get(`/api/floors/${floorId}/rooms/info`),
+
+    /**
      * Get available rooms on a floor
      * @param {number} floorId - Floor ID
      * @returns {Promise} Available rooms array

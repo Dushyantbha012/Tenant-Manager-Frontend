@@ -13,6 +13,8 @@ export default function FloorList({
     onBulkAddRooms,
     onRoomClick,
     onMoveIn,
+    onRecordPayment,
+    onViewHistory,
     loading = false,
 }) {
     const [expandedFloors, setExpandedFloors] = useState(
@@ -118,6 +120,8 @@ export default function FloorList({
                                                 room={room}
                                                 onClick={() => onRoomClick?.(room)}
                                                 onMoveIn={() => onMoveIn?.(room)}
+                                                onRecordPayment={room.isOccupied ? () => onRecordPayment?.(room) : undefined}
+                                                onViewHistory={() => onViewHistory?.(room)}
                                             />
                                         ))}
                                     </div>
@@ -130,3 +134,4 @@ export default function FloorList({
         </div>
     );
 }
+

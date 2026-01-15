@@ -157,3 +157,42 @@
         grid-template-columns: 1fr;
     }
 }
+
+/* Due status styles */
+.due-status {
+    padding: var(--space-3);
+    border-radius: var(--radius-md);
+    text-align: center;
+    min-width: 140px;
+}
+
+.due-status.has-due {
+    background-color: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.due-status.no-due {
+    background-color: rgba(34, 197, 94, 0.1);
+    border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.text-danger {
+    color: var(--danger, #ef4444) !important;
+}
+
+.text-success {
+    color: var(--success, #22c55e) !important;
+}
+
+/* Phone link styling */
+.phone-link {
+    color: var(--primary);
+    text-decoration: none;
+    cursor: pointer;
+    transition: color var(--transition-fast);
+}
+
+.phone-link:hover {
+    color: var(--primary-dark, #4338ca);
+    text-decoration: underline;
+}

@@ -244,7 +244,27 @@ export default function TenantForm() {
 
         try {
             if (isEditMode) {
-                await tenantService.updateTenant(id, formData);
+                // Update tenant profile
+                await tenantService.updateTenant(id, {
+                    fullName: formData.fullName,
+                    email: formData.email,
+                    phone: formData.phone,
+                    idProofType: formData.idProofType,
+                    idProofNumber: formData.idProofNumber,
+                    emergencyContactName: formData.emergencyContactName,
+                    emergencyContactPhone: formData.emergencyContactPhone,
+                    moveInDate: formData.moveInDate
+                });
+
+                // Also update agreement if rent details changed
+                if (formData.rentAmount) {
+                    await tenantService.updateAgreement(id, {
+                        monthlyRentAmount: parseFloat(formData.rentAmount),
+                        securityDeposit: parseFloat(formData.securityDeposit) || 0,
+                        paymentDueDay: parseInt(formData.paymentDueDay) || 5
+                    });
+                }
+
                 showToast('success', 'Tenant updated successfully');
             } else {
                 // Construct the payload as expected by the createTenant API
@@ -435,6 +455,53 @@ export default function TenantForm() {
                                         onChange={handleChange}
                                     />
                                 </div>
+
+                                {/* Rent Agreement Fields - shown in edit mode */}
+                                {isEditMode && (
+                                    <>
+                                        <h3 className="section-title">Rent Agreement</h3>
+                                        <div className="form-row">
+                                            <Input
+                                                label="Monthly Rent (₹) *"
+                                                name="rentAmount"
+                                                type="number"
+                                                value={formData.rentAmount}
+                                                onChange={handleChange}
+                                                error={errors.rentAmount}
+                                            />
+                                            <Input
+                                                label="Security Deposit (₹)"
+                                                name="securityDeposit"
+                                                type="number"
+                                                value={formData.securityDeposit}
+                                                onChange={handleChange}
+                                            />
+                                        </div>
+
+                                        <div className="form-row">
+                                            <Input
+                                                label="Move-in Date"
+                                                name="moveInDate"
+                                                type="date"
+                                                value={formData.moveInDate}
+                                                onChange={handleChange}
+                                            />
+                                            <div className="form-group">
+                                                <label>Rent Due Day (Each Month)</label>
+                                                <select
+                                                    name="paymentDueDay"
+                                                    value={formData.paymentDueDay}
+                                                    onChange={handleChange}
+                                                    className="form-select"
+                                                >
+                                                    {[...Array(31)].map((_, i) => (
+                                                        <option key={i + 1} value={i + 1}>{i + 1}</option>
+                                                    ))}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </>
+                                )}
                             </div>
                         )}
 

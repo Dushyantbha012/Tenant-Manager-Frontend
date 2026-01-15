@@ -32,10 +32,10 @@ const rentService = {
         });
     },
 
-    getDueReport: (month) => {
-        return api.get('/api/rent/due/report', {
-            params: { month }
-        });
+    getDueReport: (month, propertyId = null) => {
+        const params = { month };
+        if (propertyId) params.propertyId = propertyId;
+        return api.get('/api/rent/due/report', { params });
     },
 
     // Summary methods

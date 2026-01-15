@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PageContainer from '../../components/layout/PageContainer';
 import Table from '../../components/common/Table';
@@ -14,7 +14,6 @@ export default function DueReport() {
     const [dues, setDues] = useState([]);
     const [loading, setLoading] = useState(true);
     const [selectedMonth, setSelectedMonth] = useState(new Date().toISOString().slice(0, 7)); // YYYY-MM
-    const [summary, setSummary] = useState({ totalDue: 0, totalTenants: 0, overdueCount: 0 });
 
     useEffect(() => {
         fetchDueReport();
@@ -24,8 +23,11 @@ export default function DueReport() {
         try {
             setLoading(true);
             const response = await rentService.getDueReport(selectedMonth + '-01');
-            setDues(response.data.tenants || []);
-            setSummary(response.data.summary || { totalDue: 0, totalTenants: 0, overdueCount: 0 });
+            // API returns array of DueRentDto directly
+            const dueData = response.data || [];
+            // Filter to only include tenants with actual dues (dueAmount > 0)
+            const tenantsWithDues = dueData.filter(item => item.dueAmount > 0);
+            setDues(tenantsWithDues);
         } catch (error) {
             console.error('Failed to fetch due report:', error);
             showToast('error', 'Failed to load due report');
@@ -34,11 +36,24 @@ export default function DueReport() {
         }
     };
 
+    // Calculate summary from the dues data
+    const summary = useMemo(() => {
+        const totalDue = dues.reduce((sum, item) => sum + (item.dueAmount || 0), 0);
+        const totalTenants = dues.length;
+        // Calculate days overdue based on current date vs payment due day
+        const today = new Date();
+        const overdueCount = dues.filter(item => {
+            // A due is considered critical if it's more than 15 days past due
+            // Since we only have month data, estimate based on current day of month
+            const dayOfMonth = today.getDate();
+            return dayOfMonth > 15 && item.dueAmount > 0;
+        }).length;
+
+        return { totalDue, totalTenants, overdueCount };
+    }, [dues]);
+
     const handlePayClick = (tenant) => {
-        // Navigate to record payment with pre-filled state (if implemented via state passing)
-        // For now, we just go to the page, user selects tenant
-        // Ideally, we could pass state: navigate('/payments/record', { state: { tenantId: tenant.id } });
-        navigate('/payments/record');
+        navigate('/payments/record', { state: { tenantId: tenant.tenantId } });
     };
 
     const columns = [
@@ -48,27 +63,32 @@ export default function DueReport() {
             render: (row) => (
                 <div className="tenant-cell">
                     <span className="font-bold">{row.tenantName}</span>
-                    <span className="text-secondary text-sm">{row.phone}</span>
+                    <span className="text-secondary text-sm">{row.propertyName}</span>
                 </div>
             )
         },
         {
-            header: 'Property / Room',
-            accessor: (row) => `${row.propertyName} / ${row.roomNumber}`,
+            header: 'Room',
+            accessor: 'roomNumber',
+            render: (row) => `Room ${row.roomNumber}`
+        },
+        {
+            header: 'Expected',
+            accessor: 'expectedAmount',
+            render: (row) => formatCurrency(row.expectedAmount),
+            className: 'text-right'
+        },
+        {
+            header: 'Paid',
+            accessor: 'paidAmount',
+            render: (row) => formatCurrency(row.paidAmount),
+            className: 'text-right'
         },
         {
             header: 'Due Amount',
-            accessor: (row) => formatCurrency(row.dueAmount),
+            accessor: 'dueAmount',
+            render: (row) => formatCurrency(row.dueAmount),
             className: 'text-danger font-bold text-right'
-        },
-        {
-            header: 'Days Overdue',
-            accessor: 'daysOverdue',
-            render: (row) => (
-                <span className={`badge ${row.daysOverdue > 15 ? 'badge-danger' : 'badge-warning'}`}>
-                    {row.daysOverdue} days
-                </span>
-            )
         },
         {
             header: 'Actions',
@@ -76,7 +96,6 @@ export default function DueReport() {
             render: (row) => (
                 <div className="flex gap-2">
                     <Button size="sm" onClick={() => handlePayClick(row)}>Pay</Button>
-                    <Button size="sm" variant="outline" onClick={() => window.open(`tel:${row.phone}`)}>📞</Button>
                 </div>
             )
         }

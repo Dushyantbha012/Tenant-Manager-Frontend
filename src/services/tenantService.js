@@ -47,6 +47,12 @@ const tenantService = {
     getTenantByRoom: async (roomId) => {
         const response = await api.get(`/api/rooms/${roomId}/tenant`);
         return response.data;
+    },
+
+    // Get tenant history for a room (all tenants, active and moved out)
+    getTenantHistoryByRoom: async (roomId) => {
+        const response = await api.get(`/api/rooms/${roomId}/tenant-history`);
+        return response.data;
     }
 };
 
