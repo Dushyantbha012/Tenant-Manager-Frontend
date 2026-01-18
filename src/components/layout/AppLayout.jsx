@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar';
-import ChatWidget from '../features/ChatWidget';
 import './AppLayout.css';
 
 /**
@@ -51,9 +50,6 @@ export default function AppLayout() {
                 {/* Page content */}
                 <Outlet />
             </main>
-
-            {/* Floating Chat Widget */}
-            <ChatWidget />
         </div>
     );
 }
