@@ -17,6 +17,8 @@ import TenantHistoryModal from '../../components/features/properties/TenantHisto
 import Dropdown, { MoreTrigger } from '../../components/common/Dropdown';
 import Skeleton from '../../components/common/Skeleton';
 import SearchInput from '../../components/common/SearchInput';
+import AssistantList from '../../components/features/properties/Assistants/AssistantList';
+import { useAuth } from '../../context/AuthContext';
 import { formatCurrency, formatDate, formatPhone } from '../../utils/formatters';
 import './PropertyDetail.css';
 
@@ -28,6 +30,7 @@ export default function PropertyDetail() {
     const { id } = useParams();
     const navigate = useNavigate();
     const { showToast } = useToast();
+    const { user } = useAuth();
 
     const [property, setProperty] = useState(null);
     const [floors, setFloors] = useState([]);
@@ -269,11 +272,14 @@ export default function PropertyDetail() {
         }
     };
 
+    const isOwner = property?.owner?.id === user?.id;
+
     const tabItems = [
         { id: 'overview', label: 'Overview' },
         { id: 'floors', label: 'Floors & Rooms', badge: floors.length },
         { id: 'tenants', label: 'Tenants' },
         { id: 'payments', label: 'Payments' },
+        ...(isOwner ? [{ id: 'assistants', label: 'Assistants' }] : []),
     ];
 
     const dropdownItems = [
@@ -550,6 +556,13 @@ export default function PropertyDetail() {
                     />
                 </div>
             </TabPanel>
+
+            {/* Assistants Tab */}
+            {isOwner && (
+                <TabPanel active={activeTab === 'assistants'}>
+                    <AssistantList propertyId={property.id} />
+                </TabPanel>
+            )}
 
             {/* Add Floor Modal */}
             <Modal

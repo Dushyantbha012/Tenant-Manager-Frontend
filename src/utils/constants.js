@@ -50,6 +50,16 @@ export const ACCESS_LEVELS = {
     ADMIN: 'ADMIN',
 };
 
+// Property Permissions
+export const PROPERTY_PERMISSIONS = {
+    VIEW_PROPERTY: 'VIEW_PROPERTY',
+    MANAGE_ROOMS: 'MANAGE_ROOMS',
+    MANAGE_TENANTS: 'MANAGE_TENANTS',
+    MANAGE_PAYMENTS: 'MANAGE_PAYMENTS',
+    VIEW_FINANCIALS: 'VIEW_FINANCIALS',
+    MANAGE_SETTINGS: 'MANAGE_SETTINGS',
+};
+
 // Routes
 export const ROUTES = {
     // Public
@@ -101,6 +111,11 @@ export const NAV_ITEMS = [
             { label: 'Record Payment', path: ROUTES.PAYMENT_RECORD },
             { label: 'Due Report', path: ROUTES.PAYMENT_DUE },
         ],
+    },
+    {
+        label: 'Access Control',
+        path: ROUTES.ACCESS_CONTROL,
+        icon: 'lock', // Ensure 'lock' icon is handled in Sidebar
     },
 ];
 
