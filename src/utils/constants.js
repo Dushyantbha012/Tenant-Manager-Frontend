@@ -3,7 +3,7 @@
  */
 
 // API Configuration
-export const API_BASE_URL = 'http://localhost:8080';
+export const API_BASE_URL = 'http://13.201.186.2:8080';
 
 // Local Storage Keys
 export const STORAGE_KEYS = {
