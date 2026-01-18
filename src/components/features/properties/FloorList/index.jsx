@@ -54,8 +54,13 @@ export default function FloorList({
     return (
         <div className="floor-list">
             {floors.map((floor) => {
-                const occupiedCount = floor.rooms?.filter((r) => r.isOccupied).length || 0;
-                const totalRooms = floor.rooms?.length || 0;
+                // Sort rooms numerically/naturally to fix ordering (e.g., 1, 2, 10 instead of 1, 10, 2)
+                const sortedRooms = [...(floor.rooms || [])].sort((a, b) =>
+                    String(a.roomNumber).localeCompare(String(b.roomNumber), undefined, { numeric: true })
+                );
+
+                const occupiedCount = sortedRooms.filter((r) => r.isOccupied).length || 0;
+                const totalRooms = sortedRooms.length || 0;
 
                 return (
                     <div
@@ -114,7 +119,7 @@ export default function FloorList({
                                     <p className="floor-no-rooms">No rooms on this floor</p>
                                 ) : (
                                     <div className="floor-rooms-grid">
-                                        {floor.rooms.map((room) => (
+                                        {sortedRooms.map((room) => (
                                             <RoomCard
                                                 key={room.id}
                                                 room={room}
