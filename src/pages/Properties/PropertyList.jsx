@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useToast } from '../../context/ToastContext';
+import { useViewMode } from '../../context/ViewModeContext';
 import propertyService from '../../services/propertyService';
 import Button from '../../components/common/Button';
 import SearchInput from '../../components/common/SearchInput';
@@ -17,6 +18,7 @@ import './PropertyList.css';
 export default function PropertyList() {
     const navigate = useNavigate();
     const { showToast } = useToast();
+    const { mode, selectedOwnerId } = useViewMode();
 
     const [properties, setProperties] = useState([]);
     const [filteredProperties, setFilteredProperties] = useState([]);
@@ -26,15 +28,15 @@ export default function PropertyList() {
     const [deleteModal, setDeleteModal] = useState({ open: false, property: null });
     const [deleting, setDeleting] = useState(false);
 
-    // Fetch properties
+    // Fetch properties when mode or selectedOwnerId changes
     useEffect(() => {
         fetchProperties();
-    }, []);
+    }, [mode, selectedOwnerId]);
 
     const fetchProperties = async () => {
         try {
             setLoading(true);
-            const response = await propertyService.getAll();
+            const response = await propertyService.getAll(mode, selectedOwnerId);
             setProperties(response.data || []);
             setFilteredProperties(response.data || []);
         } catch (error) {

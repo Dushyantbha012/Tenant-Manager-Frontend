@@ -7,9 +7,15 @@ import api from './api';
 const propertyService = {
     /**
      * Get all properties for authenticated user
+     * @param {string} mode - View mode: 'owner', 'assistant', or 'all' (default)
+     * @param {number|null} ownerId - Optional owner ID to filter by (for assistant mode)
      * @returns {Promise} Properties array
      */
-    getAll: () => api.get('/api/properties'),
+    getAll: (mode = 'all', ownerId = null) => {
+        const params = { mode };
+        if (ownerId) params.ownerId = ownerId;
+        return api.get('/api/properties', { params });
+    },
 
     /**
      * Get property by ID

@@ -10,6 +10,7 @@ export const STORAGE_KEYS = {
     TOKEN: 'auth_token',
     USER: 'auth_user',
     THEME: 'app_theme',
+    VIEW_MODE: 'view_mode',
 };
 
 // User Types
